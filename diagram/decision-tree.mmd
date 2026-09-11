@@ -1,0 +1,24 @@
+flowchart TD
+  S([What does your dApp need?])
+  S --> Q1{Read status, or<br/>verify a fresh proof?}
+
+  Q1 -->|Read on-chain status| Q2{Individual or<br/>business?}
+  Q1 -->|Verify a credential proof| D[Pattern D<br/>EligibilityWidget + backend verifier]
+
+  Q2 -->|Individual| Q3{Already onboarded?}
+  Q2 -->|Business| Q4{Already a verified business?}
+
+  Q3 -->|Yes| A[Pattern A<br/>useHasChainPermission + EligibilityGate]
+  Q3 -->|No| B[Pattern B<br/>IndividualOnboarding then refetch]
+
+  Q4 -->|Yes| A2[useBusinessDetails<br/>read company details]
+  Q4 -->|No| C[Pattern C<br/>BusinessOnboardingSdk then refetchBusinessIdentifier]
+
+  D --> SENS{Also need durable<br/>on-chain permission?}
+  SENS -->|Yes| COMBO[Combine D + A]
+  SENS -->|No| DONE([Done])
+  A --> DONE
+  A2 --> DONE
+  B --> DONE
+  C --> DONE
+  COMBO --> DONE
